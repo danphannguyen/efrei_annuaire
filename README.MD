@@ -59,6 +59,43 @@ produit ce cas.
 
 0. Une fonction de hachage va prendre une chaine de caractère et y appliquer un calcul pour obtenir une autre chaîne de cartère. Ce calcul est déterministe car pour un même string la sortie sera TOUJOURS la même.
 
+2. Dans un main , aﬀichez l’indice obtenu pour les cinq adresses alice@mail.com, bob@mail.com,
+carole@mail.com, david@mail.com, eve@mail.com, avec TAILLE_TABLE valant 1024.
+```text
+Indices obtenus pour TAILLE_TABLE = 1024 :
+alice@mail.com     -> hash:  424300563 | indice: 19
+bob@mail.com       -> hash: 1403682920 | indice: 104
+carole@mail.com    -> hash: 2094645995 | indice: 747
+david@mail.com     -> hash: 4201840829 | indice: 189
+eve@mail.com       -> hash: 2553102517 | indice: 181
+user1@gmail.com    -> hash:  444242892 | indice: 972
+user2@gmail.com    -> hash: 2681688333 | indice: 269
+```
+
+3. Aﬀichez l’indice de alice@mail.com trois fois de suite. Que constatez-vous, et pourquoi est-ce indispens-
+able ?
+-> Il est le même, cela est indispensable pour pouvoir le rechercher car si la sortie n'est pas constante pour une même entrée, la recherche serait impossible.
+
+4. Comparez les indices de user1@mail.com et user2@mail.com. Sont-ils voisins ?
+-> Non ils ne sont pas voisin 
+```
+user1@gmail.com    -> hash:  444242892 | indice: 972
+user2@gmail.com    -> hash: 2681688333 | indice: 269
+```
+
+5. Remplacez unsigned long par int dans la fonction et dans la variable qui reçoit l’indice, puis réaﬀichez les indices des cinq adresses. Deux d’entre elles changent de comportement : lesquelles, et que vaut alors
+leur indice ? Que se passerait-il si on utilisait cet indice pour accéder au tableau ?
+-> Les deux adresses qui changent de comportement sont david@mail.com et eve@mail.com.
+Leurs nouveaux indices valent :
+- david@mail.com : indice = -835 (au lieu de 189)
+- eve@mail.com   : indice = -843 (au lieu de 181)
+
+-> L'indice étant négatif, tenter d'accéder au tableau (ex: `table[-835]`) ce qui provoque un accès mémoire hors limites, menant à un comportement indéterminé, à la corruption de mémoire ou à un plantage immédiat par `Segmentation Fault`.
 
 
+6. Question : deux adresses différentes peuvent-elles donner le même indice ? Si oui, est-ce un défaut de la
+fonction ?
+-> Oui c'est possible (c'est une collision), et non ce n'est pas un défaut, en cas de collision la nouvelle valeur sera stockée au début du bucket
+
+## Exo 5
 

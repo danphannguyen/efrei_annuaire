@@ -12,4 +12,7 @@ void seq_insert(const char *email, int id);
 bool seq_search(const char *email);
 void seq_free(void);
 
+#define TAILLE_TABLE 1024
+unsigned long hachage(const char *email);
+
 #endif

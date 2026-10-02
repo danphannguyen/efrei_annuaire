@@ -1,43 +1,67 @@
-#include <assert.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include "annuaire.h"
 
+static int tests_reussis = 0;
+static int tests_total = 0;
+
+static void verifier(const char *titre, bool obtenu, bool attendu) {
+  tests_total++;
+  if (obtenu == attendu) {
+    tests_reussis++;
+    printf("[OK]    %s\n", titre);
+  } else {
+    printf("[ECHEC] %s (obtenu=%s, attendu=%s)\n", titre,
+           obtenu ? "true" : "false", attendu ? "true" : "false");
+  }
+}
+
 int main(void) {
-  printf("=== Test 1 : Annuaire vide ===\n");
-  bool vide = hash_search("alice@mail.com");
-  printf("Recherche 'alice@mail.com' sur table vide : %s\n", vide ? "trouve (FAIL)" : "non trouve (PASS)");
-  assert(!vide);
+  /* 1. Annuaire vide : les deux approches répondent false */
+  verifier("seq_search sur annuaire vide", seq_search("alice@mail.com"), false);
+  verifier("hash_search sur annuaire vide", hash_search("alice@mail.com"), false);
 
-  printf("\n=== Test 2 : 5 adresses insérées ===\n");
-  hash_insert("alice@mail.com", 1);
-  hash_insert("bob@mail.com", 2);
-  hash_insert("carole@mail.com", 3);
-  hash_insert("david@mail.com", 4);
-  hash_insert("eve@mail.com", 5);
+  /* 2. Insère les mêmes cinq utilisateurs dans les deux structures */
+  const char *emails[5] = {
+      "alice@mail.com",
+      "bob@mail.com",
+      "carole@mail.com",
+      "david@mail.com",
+      "eve@mail.com"
+  };
 
-  printf("Recherches qui doivent réussir :\n");
-  bool r1 = hash_search("alice@mail.com");
-  printf("  - alice@mail.com   : %s\n", r1 ? "trouve (PASS)" : "non trouve (FAIL)");
-  assert(r1);
+  for (int i = 0; i < 5; i++) {
+    seq_insert(emails[i], i + 1);
+    hash_insert(emails[i], i + 1);
+  }
 
-  bool r2 = hash_search("carole@mail.com");
-  printf("  - carole@mail.com  : %s\n", r2 ? "trouve (PASS)" : "non trouve (FAIL)");
-  assert(r2);
+  /* 3. Les cinq adresses sont trouvées par les deux approches */
+  for (int i = 0; i < 5; i++) {
+    char titre_seq[128];
+    char titre_hash[128];
+    snprintf(titre_seq, sizeof(titre_seq), "seq_search trouve %s", emails[i]);
+    snprintf(titre_hash, sizeof(titre_hash), "hash_search trouve %s", emails[i]);
 
-  bool r3 = hash_search("eve@mail.com");
-  printf("  - eve@mail.com     : %s\n", r3 ? "trouve (PASS)" : "non trouve (FAIL)");
-  assert(r3);
+    verifier(titre_seq, seq_search(emails[i]), true);
+    verifier(titre_hash, hash_search(emails[i]), true);
+  }
 
-  printf("Recherches qui doivent échouer :\n");
-  bool r4 = hash_search("inconnu@mail.com");
-  printf("  - inconnu@mail.com : %s\n", !r4 ? "non trouve (PASS)" : "trouve (FAIL)");
-  assert(!r4);
+  /* 4. Deux adresses absentes ne sont trouvées par aucune des deux */
+  verifier("seq_search ne trouve pas inconnu@mail.com", seq_search("inconnu@mail.com"), false);
+  verifier("hash_search ne trouve pas inconnu@mail.com", hash_search("inconnu@mail.com"), false);
+  verifier("seq_search ne trouve pas mallory@mail.com", seq_search("mallory@mail.com"), false);
+  verifier("hash_search ne trouve pas mallory@mail.com", hash_search("mallory@mail.com"), false);
 
-  bool r5 = hash_search("mallory@mail.com");
-  printf("  - mallory@mail.com : %s\n", !r5 ? "non trouve (PASS)" : "trouve (FAIL)");
-  assert(!r5);
+  /* 5. Une adresse dont seule la casse diffère (Alice@mail.com) n'est pas trouvée */
+  verifier("seq_search ne trouve pas Alice@mail.com (casse)", seq_search("Alice@mail.com"), false);
+  verifier("hash_search ne trouve pas Alice@mail.com (casse)", hash_search("Alice@mail.com"), false);
 
+  /* 6. Compte final */
+  printf("\nBilan : %d / %d tests réussis.\n", tests_reussis, tests_total);
+
+  /* 7. Libère la mémoire */
+  seq_free();
   hash_free();
-  printf("\nTous les tests normaux ont réussi !\n");
-  return 0;
+
+  return (tests_reussis == tests_total) ? 0 : 1;
 }

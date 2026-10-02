@@ -40,9 +40,10 @@ void seq_free(void) {
 }
 
 bool seq_search(const char *email) {
-  for (int i = 0; i < taille; i++)
-    // if (strcmp(email, annuaire[i].email)  == 0)
-    if (email == annuaire[i].email)
+  for (int i = 0; i < taille; i++) {
+    if (strcmp(email, annuaire[i].email) == 0) {
       return true;
+    }
+  }
   return false;
 }

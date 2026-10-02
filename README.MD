@@ -129,3 +129,29 @@ dans une variable avant d’appeler free(n) ?
 Car si on ne sauvegarde pas n->next avant d'appeler free(n), on perd la valeur du n->next donc on perdra l'adresse du prochain noeud
 
 ## Exo 6
+
+Sortie obtenue :
+```
+[OK]    seq_search sur annuaire vide
+[OK]    hash_search sur annuaire vide
+[OK]    seq_search trouve alice@mail.com
+[OK]    hash_search trouve alice@mail.com
+[OK]    seq_search trouve bob@mail.com
+[OK]    hash_search trouve bob@mail.com
+[OK]    seq_search trouve carole@mail.com
+[OK]    hash_search trouve carole@mail.com
+[OK]    seq_search trouve david@mail.com
+[OK]    hash_search trouve david@mail.com
+[OK]    seq_search trouve eve@mail.com
+[OK]    hash_search trouve eve@mail.com
+[OK]    seq_search ne trouve pas inconnu@mail.com
+[OK]    hash_search ne trouve pas inconnu@mail.com
+[OK]    seq_search ne trouve pas mallory@mail.com
+[OK]    hash_search ne trouve pas mallory@mail.com
+[OK]    seq_search ne trouve pas Alice@mail.com (casse)
+[OK]    hash_search ne trouve pas Alice@mail.com (casse)
+
+Bilan : 18 / 18 tests réussis.
+```
+
+Code de retour : 0

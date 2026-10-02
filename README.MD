@@ -99,3 +99,33 @@ fonction ?
 
 ## Exo 5
 
+2. Testez avec les mêmes cinq adresses que l’exercice 3, plus les deux recherches qui doivent échouer, plus le
+cas de l’annuaire vide.
+
+```
+=== Test 1 : Annuaire vide ===
+Recherche 'alice@mail.com' sur table vide : non trouve (PASS)
+=== Test 2 : 5 adresses insérées ===
+Recherches qui doivent réussir :
+  - alice@mail.com   : trouve (PASS)
+  - carole@mail.com  : trouve (PASS)
+  - eve@mail.com     : trouve (PASS)
+Recherches qui doivent échouer :
+  - inconnu@mail.com : non trouve (PASS)
+  - mallory@mail.com : non trouve (PASS)
+Tous les tests normaux ont réussi !
+```
+
+3. Inversez volontairement les deux lignes de l’insertion en tête. Insérez trois adresses tombant dans la même
+alvéole, puis recherchez-les. Que se passe-t-il ?
+-> En échangeant ses deux lignes le soucis est que le tableau va boucler sur lui même car on dit que le pointeur commençant le tableau est n et que le n->next = table[i] donc au début du tableau.
+```
+table[i] = n;
+n->next = table[i];
+```
+
+4. Question : hash_free doit libérer chaque nœud de chaque chaîne. Pourquoi faut-il mémoriser n->next
+dans une variable avant d’appeler free(n) ?
+Car si on ne sauvegarde pas n->next avant d'appeler free(n), on perd la valeur du n->next donc on perdra l'adresse du prochain noeud
+
+## Exo 6

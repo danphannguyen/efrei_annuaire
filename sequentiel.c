@@ -9,10 +9,10 @@ static int capacite = 0;
 
 void seq_insert(const char *email, int id) {
   // Si la taille du tableau atteint sa capacité max
-  if (taille == capacite) {   
+  if (taille == capacite) {
     int nouvelle_capacite;
-    
-    if (capacite == 0) {    // Si la capacité est égal à 0 (initialisation)
+
+    if (capacite == 0) { // Si la capacité est égal à 0 (initialisation)
       nouvelle_capacite = 16;
     } else {
       nouvelle_capacite = capacite * 2;
@@ -29,7 +29,7 @@ void seq_insert(const char *email, int id) {
   annuaire[taille].id = id;
   taille++;
   // inclure un printf si besoin pour capacite et taille
-  printf("Capacite : %d / Taille : %d \n", capacite, taille);
+  // printf("Capacite : %d / Taille : %d \n", capacite, taille);
 }
 
 void seq_free(void) {
@@ -37,4 +37,12 @@ void seq_free(void) {
   annuaire = NULL;
   taille = 0;
   capacite = 0;
+}
+
+bool seq_search(const char *email) {
+  for (int i = 0; i < taille; i++)
+    // if (strcmp(email, annuaire[i].email)  == 0)
+    if (email == annuaire[i].email)
+      return true;
+  return false;
 }

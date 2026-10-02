@@ -9,6 +9,7 @@ typedef struct {
 } User;
 
 void seq_insert(const char *email, int id);
+bool seq_search(const char *email);
 void seq_free(void);
 
 #endif

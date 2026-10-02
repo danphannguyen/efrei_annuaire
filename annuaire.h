@@ -7,4 +7,8 @@ typedef struct {
   char email[EMAIL_MAX]; /* l'adresse e-mail */
   int id; /* l'identifiant numerique */
 } User;
+
+void seq_insert(const char *email, int id);
+void seq_free(void);
+
 #endif

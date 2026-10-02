@@ -36,3 +36,4 @@ points de la grille qui les distinguent ?
 
 ## Exo 2
 
+3. Realloc à été appelé 3 fois pour 40 utilisateurs et 7 fois pour 1000 utilisateurs

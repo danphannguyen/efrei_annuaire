@@ -1,14 +1,13 @@
-#include <stdbool.h>
 #include <stdio.h>
 #include "annuaire.h"
 
 int main(void) {
-  User user;
-  user.id = 1;
-  // user.email = "helloworld@gmail.com";
+  for (int i = 1; i <= 40; i++) {
+    char email[EMAIL_MAX];
+    snprintf(email, EMAIL_MAX, "user%d@mail.com", i);
+    seq_insert(email, i);
+  }
 
-  snprintf(user.email, EMAIL_MAX, "%s", "helloworld@gmail.com");
-
-  printf("User ID: %d\n", user.id);
-  printf("User Email: %s\n", user.email);
+  seq_free();
+  return 0;
 }
